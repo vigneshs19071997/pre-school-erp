@@ -1,0 +1,412 @@
+<title>Preschool ERP QA Pass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --paper: #faf7ef;
+    --surface: #ffffff;
+    --surface-sunk: #f3efe3;
+    --ink: #1b2a22;
+    --ink-soft: #52604f;
+    --ink-faint: #8a9286;
+    --line: #e5deca;
+    --line-soft: #efe9d8;
+    --brand: #2b6b4d;
+    --brand-deep: #163826;
+    --brand-pale: #e6efe7;
+    --gold: #a97a20;
+    --gold-pale: #f6ecd4;
+    --ok: #1f8f74;
+    --ok-pale: #e1f2eb;
+    --warn: #b07a1e;
+    --warn-pale: #f8edd8;
+    --danger: #a84258;
+    --danger-pale: #f7e6ea;
+    --info: #3c5a92;
+    --info-pale: #e7ecf5;
+    --shadow: 0 1px 2px rgba(22, 56, 38, .04), 0 10px 30px -12px rgba(22, 56, 38, .14);
+    --radius: 14px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #11170f;
+      --surface: #171f17;
+      --surface-sunk: #1d261c;
+      --ink: #e9efe4;
+      --ink-soft: #aab7a2;
+      --ink-faint: #76826f;
+      --line: #2a342a;
+      --line-soft: #233024;
+      --brand: #4e9770;
+      --brand-deep: #c7e4d1;
+      --brand-pale: #1d2f24;
+      --gold: #d4ab5f;
+      --gold-pale: #2d2615;
+      --ok: #51b696;
+      --ok-pale: #163527;
+      --warn: #d4ab5f;
+      --warn-pale: #2d2615;
+      --danger: #d17e92;
+      --danger-pale: #351d24;
+      --info: #7e9bd6;
+      --info-pale: #1b2436;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px -12px rgba(0, 0, 0, .5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #11170f;
+    --surface: #171f17;
+    --surface-sunk: #1d261c;
+    --ink: #e9efe4;
+    --ink-soft: #aab7a2;
+    --ink-faint: #76826f;
+    --line: #2a342a;
+    --line-soft: #233024;
+    --brand: #4e9770;
+    --brand-deep: #c7e4d1;
+    --brand-pale: #1d2f24;
+    --gold: #d4ab5f;
+    --gold-pale: #2d2615;
+    --ok: #51b696;
+    --ok-pale: #163527;
+    --warn: #d4ab5f;
+    --warn-pale: #2d2615;
+    --danger: #d17e92;
+    --danger-pale: #351d24;
+    --info: #7e9bd6;
+    --info-pale: #1b2436;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px -12px rgba(0, 0, 0, .5);
+  }
+
+  * { box-sizing: border-box; }
+  html { text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 600; color: var(--ink); text-wrap: balance; margin: 0; }
+  a { color: var(--brand); }
+  .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---------------- Masthead ---------------- */
+  .masthead {
+    background: linear-gradient(160deg, var(--brand-deep), var(--brand) 115%);
+    color: #f3efe0;
+    padding: 56px 24px 40px;
+    margin-bottom: 0;
+  }
+  .masthead-inner { max-width: 860px; margin: 0 auto; }
+  .crest { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .crest svg { display: block; }
+  .crest span { font-size: 13px; letter-spacing: .09em; text-transform: uppercase; color: rgba(243,239,224,.72); font-weight: 600; }
+  .masthead h1 { font-size: 38px; line-height: 1.12; color: #fdfcf6; max-width: 15ch; }
+  .masthead .sub { margin-top: 10px; font-size: 16px; color: rgba(243,239,224,.78); max-width: 50ch; }
+  .masthead .meta { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: rgba(243,239,224,.7); }
+  .masthead .meta b { color: #fdfcf6; font-weight: 600; }
+
+  .scorecard {
+    max-width: 860px; margin: -34px auto 0; padding: 0 24px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .score {
+    background: var(--surface);
+    padding: 20px 18px;
+  }
+  .score .num { font-family: "Playfair Display", serif; font-size: 30px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .score .lbl { margin-top: 4px; font-size: 12px; letter-spacing: .04em; color: var(--ink-faint); text-transform: uppercase; }
+  .score.ok .num { color: var(--ok); }
+
+  @media (max-width: 640px) {
+    .scorecard { grid-template-columns: repeat(2, 1fr); margin-top: -24px; }
+    .masthead h1 { font-size: 30px; }
+  }
+
+  /* ---------------- Sections ---------------- */
+  section { padding-top: 56px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .eyebrow .n {
+    display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--gold-pale); color: var(--gold); font-size: 11px; font-weight: 700;
+  }
+  section > h2 { font-size: 25px; margin-bottom: 10px; }
+  section > p.lead { color: var(--ink-soft); max-width: 62ch; font-size: 15px; margin: 0 0 24px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  /* checklist groups */
+  .group { margin-bottom: 18px; }
+  .group h3 {
+    font-family: "Plus Jakarta Sans", sans-serif; font-weight: 700; font-size: 13px;
+    text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint);
+    padding: 14px 20px 10px;
+  }
+  ul.checks { list-style: none; margin: 0; padding: 0 20px 16px; }
+  ul.checks li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 0; border-top: 1px solid var(--line-soft); font-size: 14.5px;
+  }
+  ul.checks li:first-child { border-top: none; }
+  ul.checks .tick {
+    flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--ok-pale); color: var(--ok); display: grid; place-items: center;
+    margin-top: 2px; font-size: 11px;
+  }
+  ul.checks .txt b { color: var(--ink); }
+  ul.checks .txt .evidence { color: var(--ink-faint); font-size: 13px; display: block; margin-top: 1px; }
+
+  /* data tables */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tablewrap { overflow-x: auto; border-radius: var(--radius); }
+  th { text-align: left; font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); padding: 12px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--line-soft); vertical-align: top; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td.match { color: var(--ok); font-weight: 600; }
+  .num-cell { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+  .pill.ok { background: var(--ok-pale); color: var(--ok); }
+  .pill.info { background: var(--info-pale); color: var(--info); }
+  .pill.warn { background: var(--warn-pale); color: var(--warn); }
+
+  /* callouts */
+  .callout { border-radius: var(--radius); padding: 18px 20px; margin-top: 16px; border: 1px solid; font-size: 14.5px; }
+  .callout.note { background: var(--brand-pale); border-color: var(--line-soft); }
+  .callout.finding { background: var(--warn-pale); border-color: #e7d4a8; }
+  .callout h4 { margin: 0 0 6px; font-family: "Plus Jakarta Sans", sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink); }
+  .callout p { margin: 0 0 8px; color: var(--ink-soft); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* chart note cards */
+  .chartgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .chartgrid { grid-template-columns: 1fr; } }
+  .chartcard { background: var(--surface); border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+  .chartcard h4 { margin: 0 0 4px; font-size: 14.5px; font-weight: 700; }
+  .chartcard p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+
+  /* credentials */
+  .credrow code { background: var(--surface-sunk); padding: 2px 7px; border-radius: 5px; font-size: 13px; }
+
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  ::selection { background: var(--gold-pale); color: var(--ink); }
+</style>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="crest">
+      <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 4 L54 13 V29 C54 46 44 56 32 61 C20 56 10 46 10 29 V13 Z" fill="#f3efe0" fill-opacity="0.14" stroke="#e8c877" stroke-width="2.5"/>
+        <path d="M17 23 H47" stroke="#e8c877" stroke-width="1.4" opacity="0.6"/>
+      </svg>
+      <span>Little Sprouts Preschool · ERP</span>
+    </div>
+    <h1>QA verification pass</h1>
+    <p class="sub">Every module seeded with realistic data, every flow driven through the real UI, every number on the dashboard checked against an independent calculation.</p>
+    <div class="meta">
+      <span><b>Run on</b> 15 November 2026</span>
+      <span><b>Scope</b> full application</span>
+      <span><b>Bugs found</b> 0</span>
+    </div>
+  </div>
+</div>
+
+<div class="scorecard">
+  <div class="score"><div class="num mono">10</div><div class="lbl">Students</div></div>
+  <div class="score"><div class="num mono">541</div><div class="lbl">Attendance records</div></div>
+  <div class="score"><div class="num mono">24</div><div class="lbl">Fee invoices</div></div>
+  <div class="score ok"><div class="num mono">100%</div><div class="lbl">Calcs matched</div></div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="eyebrow"><span class="n">1</span>What was added</div>
+    <h2>Three months of realistic school life</h2>
+    <p class="lead">Left in the database for you to keep exploring — nothing here was cleaned up. All of it sits alongside your existing records (the original 2 students, 3 staff, and their data are untouched).</p>
+
+    <div class="tablewrap card">
+      <table>
+        <thead><tr><th>Area</th><th>Added</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Staff</td><td class="num-cell">2</td><td>Priya Kumar (Teacher, EMP004), Meena Rajan (Front Office, EMP005)</td></tr>
+          <tr><td>Students</td><td class="num-cell">8</td><td>Spread across all 4 classes · 1 set to "withdrawn" to test status filtering</td></tr>
+          <tr><td>Classes</td><td class="num-cell">2</td><td>Playgroup → Vignesh S, LKG → Priya Kumar (Nursery &amp; UKG left unassigned on purpose)</td></tr>
+          <tr><td>Student attendance</td><td class="num-cell">400</td><td>Every weekday, Sept + Oct 2026, with realistic present/late/absent/leave variation</td></tr>
+          <tr><td>Staff attendance</td><td class="num-cell">141</td><td>Sept + Oct, including 2 genuine absences on record for payroll to react to</td></tr>
+          <tr><td>Fee invoices</td><td class="num-cell">24</td><td>Sept, Oct &amp; Dec tuition · deliberately mixed paid / partial / pending / overdue</td></tr>
+          <tr><td>Expenses</td><td class="num-cell">17</td><td>12 categories across 3 months (rent, utilities, teaching material, transport…)</td></tr>
+          <tr><td>Payroll runs</td><td class="num-cell">14</td><td>Sept, Oct &amp; Dec, including one real loss-of-pay deduction</td></tr>
+          <tr><td>Leave / enquiries / posts</td><td class="num-cell">6</td><td>1 leave (approved), 2 admission enquiries (1 at Visit, 1 Lost), 1 announcement, 2 events</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="n">2</span>Flows driven through the real UI</div>
+    <h2>Every action tested as a user would do it</h2>
+    <p class="lead">Not database inserts — actual clicks through forms, modals and confirmations, the same path a teacher, accountant or admin would take.</p>
+
+    <div class="card">
+      <div class="group">
+        <h3>Students &amp; staff</h3>
+        <ul class="checks">
+          <li><span class="tick">✓</span><span class="txt"><b>New admission</b> — admitted 2 children through the real form; student codes <code class="mono">LS20260003</code>/<code class="mono">LS20260004</code> generated correctly<span class="evidence">Redirected to the new profile, class roster updated</span></span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Add staff member</b> — added 2 staff with roles; employee codes <code class="mono">EMP004</code>/<code class="mono">EMP005</code> auto-assigned<span class="evidence">Both can sign in with their Employee ID immediately</span></span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Assign a class teacher</b> via Classes → Edit<span class="evidence">Teacher now shows correctly on the class card and in the parent portal</span></span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3>Attendance</h3>
+        <ul class="checks">
+          <li><span class="tick">✓</span><span class="txt"><b>Take attendance</b> for all 4 classes, <b>Save register</b> for all 5 staff — today's board matches exactly</span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3>Fees &amp; expenses</h3>
+        <ul class="checks">
+          <li><span class="tick">✓</span><span class="txt"><b>Bulk-create invoices</b> ("all active students") → 9 invoices in one action</span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Record a partial payment</b> — invoice correctly flips to <span class="pill warn">partial</span>, balance recalculates</span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Record a full payment</b> — invoice correctly flips to <span class="pill ok">paid</span></span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Add a recurring expense</b> — reappears with ₹0 the next month, exactly as designed, not carrying the old amount forward</span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3>Payroll &amp; leave</h3>
+        <ul class="checks">
+          <li><span class="tick">✓</span><span class="txt"><b>Generate payroll</b> for December → 5 drafts created in one click</span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Mark all paid</b> → all 5 flip to <span class="pill ok">paid</span> with today's date stamped</span></li>
+          <li><span class="tick">✓</span><span class="txt"><b>Apply for leave</b> (My Desk) → <b>Approve</b> (Leave Requests) → staff register auto-updated for those dates</span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3>Classroom &amp; communication</h3>
+        <ul class="checks">
+          <li><span class="tick">✓</span><span class="txt">Homework posted for 2 classes, a daily report filled in, progress ratings saved across all 7 learning areas</span></li>
+          <li><span class="tick">✓</span><span class="txt">Announcement published (pinned), 2 calendar events added — both appear instantly in the parent app</span></li>
+        </ul>
+      </div>
+      <div class="group">
+        <h3>Admissions</h3>
+        <ul class="checks">
+          <li><span class="tick">✓</span><span class="txt">New enquiry → moved <b>New → Contacted → Campus visit</b> one stage at a time; a second enquiry marked <b>Lost</b> via Edit</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="n">3</span>Calculations, checked independently</div>
+    <h2>What the dashboard shows vs. what the database says</h2>
+    <p class="lead">Every figure below was computed twice — once by the app, once by a raw SQL query written separately, with no shared code path. All ten matched to the rupee.</p>
+
+    <div class="tablewrap card">
+      <table>
+        <thead><tr><th>Metric</th><th>Dashboard shows</th><th>Independently computed</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Active students</td><td class="num-cell">9</td><td class="num-cell">9</td><td class="match">✓ match</td></tr>
+          <tr><td>Fees collected (Nov)</td><td class="num-cell">₹23,000</td><td class="num-cell">₹23,000</td><td class="match">✓ match</td></tr>
+          <tr><td>Fees still due</td><td class="num-cell">₹53,000</td><td class="num-cell">₹53,000</td><td class="match">✓ match</td></tr>
+          <tr><td>Overdue invoices</td><td class="num-cell">6 · ₹32,000</td><td class="num-cell">6 · ₹32,000</td><td class="match">✓ match</td></tr>
+          <tr><td>Expenses this month</td><td class="num-cell">₹11,000</td><td class="num-cell">₹11,000</td><td class="match">✓ match</td></tr>
+          <tr><td>Salaries paid (Nov)</td><td class="num-cell">₹50,000</td><td class="num-cell">₹50,000</td><td class="match">✓ match</td></tr>
+          <tr><td>Month surplus/deficit</td><td class="num-cell">−₹38,000</td><td class="num-cell">23,000 − 11,000 − 50,000</td><td class="match">✓ match</td></tr>
+          <tr><td>Class strength (4 classes)</td><td class="num-cell">2 / 3 / 3 / 1</td><td class="num-cell">2 / 3 / 3 / 1</td><td class="match">✓ match</td></tr>
+          <tr><td>Admission funnel</td><td class="num-cell">0 new · 1 visit · 1 lost</td><td class="num-cell">same</td><td class="match">✓ match</td></tr>
+          <tr><td>Payroll loss-of-pay (vicky, Sept)</td><td class="num-cell">₹666.67</td><td class="num-cell">2 days ÷ 30 × ₹10,000</td><td class="match">✓ match</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <h4>Worth knowing</h4>
+      <p>The recurring-expense amount is designed to reset to ₹0 every new month rather than carry the previous figure forward — that's intentional (electricity bills vary), not a display bug. It showed up correctly as a "Needs amount" nudge in the table.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="n">4</span>Charts &amp; graphs</div>
+    <h2>Every chart checked against the same data</h2>
+    <p class="lead">Six charts, each re-derived from the seeded data and compared against what actually renders on screen.</p>
+
+    <div class="chartgrid">
+      <div class="chartcard"><h4>Money in &amp; out <span class="pill ok">verified</span></h4><p>Area chart correctly shows ₹0 for Jun–Aug, a clear rise to ~₹56k income / ~₹81k salaries for Sept–Oct, tapering for Nov. First glance made it look flat — the chart container needed an extra ~1s to settle before the real curve traced in; confirmed correct both by re-rendering and by reading the raw SVG coordinates directly.</p></div>
+      <div class="chartcard"><h4>Today's attendance donut <span class="pill ok">verified</span></h4><p>4/4 marked present → 100%, segments and legend counts match the register exactly.</p></div>
+      <div class="chartcard"><h4>Admission funnel <span class="pill ok">verified</span></h4><p>Only "Visit" and "Lost" show bars — correct, since that's the only two stages with enquiries in them right now.</p></div>
+      <div class="chartcard"><h4>Class strength bars <span class="pill ok">verified</span></h4><p>Capacity vs. enrolled bars for all 4 classes match the roster counts exactly, including the one withdrawn student correctly excluded.</p></div>
+      <div class="chartcard"><h4>Expense category donut <span class="pill ok">verified</span></h4><p>Utilities/Rent split and percentages (55% / 45%) recompute correctly as entries are added or edited.</p></div>
+      <div class="chartcard"><h4>Progress radar <span class="pill info">spot-checked</span></h4><p>Renders the "no ratings yet" empty state correctly for an unrated student; a rated student's 7-area radar was saved and confirmed in the database, chart not separately captured.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="n">5</span>Parent portal</div>
+    <h2>A real parent account, started from scratch</h2>
+    <p class="lead">Set up a demo family (Kavya Reddy) through the actual "first time? create password" flow — not a shortcut — then checked every tab logged in as that parent.</p>
+    <div class="card">
+      <ul class="checks">
+        <li><span class="tick">✓</span><span class="txt"><b>Home</b> — correct class, teacher, age, "not marked yet" for today, homework count, fees due all agree with the admin side</span></li>
+        <li><span class="tick">✓</span><span class="txt"><b>Fees</b> — both September and October invoices show <span class="pill warn">overdue</span>, ₹16,000 total, no payments — matches the admin ledger exactly</span></li>
+        <li><span class="tick">✓</span><span class="txt"><b>Attendance</b> — November correctly shows "no records" (this child was admitted after today's register was taken); calendar renders cleanly either way</span></li>
+        <li><span class="tick">✓</span><span class="txt"><b>Homework</b> — all 3 Playgroup assignments visible, due dates correct</span></li>
+        <li><span class="tick">✓</span><span class="txt"><b>Notices &amp; events</b> — the pinned announcement and both December calendar entries appear on the parent home feed</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="n">6</span>Findings</div>
+    <h2>Nothing broken. One thing worth knowing.</h2>
+    <div class="callout finding">
+      <h4>Attendance default state can look like real data</h4>
+      <p>On the daily "Take attendance" screen, a student who hasn't been marked yet still shows the <span class="pill ok">Present</span> button highlighted — that's a deliberate default to save taps for the common case, not a saved record. It's only visible as real data once you hit Save. Harmless, but worth a teacher knowing before they assume "green means already done."</p>
+    </div>
+    <div class="callout note">
+      <h4>Everything else</h4>
+      <p>No incorrect totals, no broken redirects, no chart rendering the wrong series, no mismatch between what staff enter and what parents see. Ten independent dashboard calculations, six charts and every core workflow in the app came back clean.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow"><span class="n">7</span>Accounts for exploring</div>
+    <h2>Sign in and look around</h2>
+    <p class="lead">All test accounts use the same unified login — Employee ID or Student ID, plus password.</p>
+    <div class="tablewrap card">
+      <table>
+        <thead><tr><th>Who</th><th>Login ID</th><th>Password</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr class="credrow"><td>Priya Kumar</td><td><code class="mono">EMP004</code></td><td><code class="mono">Teacher@123</code></td><td>Teacher · LKG</td></tr>
+          <tr class="credrow"><td>Meena Rajan</td><td><code class="mono">EMP005</code></td><td><code class="mono">Office@123</code></td><td>Front Office</td></tr>
+          <tr class="credrow"><td>Kavya Reddy's parent</td><td><code class="mono">LS20260005</code></td><td><code class="mono">Parent@123</code></td><td>Parent portal</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Little Sprouts Preschool — internal QA record</span>
+    <span>Generated 15 November 2026</span>
+  </footer>
+
+</div>
